@@ -11,6 +11,8 @@ const index = _import('home/main/index')
 const userHome = _import('userHome/index')
 
 const admin = _import('admin/index')
+const websiteUser = _import('admin/websiteUser/index')
+const vacUser = _import('admin/vacUser/index')
 /* 同步加载 */
 // const Table = _import('Table@brain');
 // const Index = _import('index@brainone');
@@ -36,11 +38,26 @@ export const constantRouterMap = [
     component: register, 
     hidden: true 
   },
+  // 管理员路由
   {
     path: '/admin',
     name: 'admin',
-    component: admin
+    redirect: '/admin/websiteUser',
+    component: admin,
+    children: [
+      {
+        path: '/admin/websiteUser',
+        name: 'websiteUser',
+        component: websiteUser
+      },
+      {
+        path: '/admin/vacUser',
+        name: 'vacUser',
+        component: vacUser
+      }
+    ]
   },
+  //主页路由
   {
     path: '/home',
     name:'home',
@@ -62,6 +79,7 @@ export const constantRouterMap = [
       
     ]
   },
+  //普通用户路由
   {
     path: '/userHome',
     name: 'userHome',
