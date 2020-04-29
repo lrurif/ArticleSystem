@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'iconfont';  /* project id 1708589 */
-  src: url('//at.alicdn.com/t/font_1708589_3f94x0hki1f.eot');
-  src: url('//at.alicdn.com/t/font_1708589_3f94x0hki1f.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1708589_3f94x0hki1f.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1708589_3f94x0hki1f.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1708589_3f94x0hki1f.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1708589_3f94x0hki1f.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1708589_keg2lpnrueq.eot');
+  src: url('//at.alicdn.com/t/font_1708589_keg2lpnrueq.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1708589_keg2lpnrueq.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1708589_keg2lpnrueq.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1708589_keg2lpnrueq.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1708589_keg2lpnrueq.svg#iconfont') format('svg');
 }
 .iconfont {
   font-family: "iconfont" !important;
@@ -30,6 +30,9 @@
 .icon-faxian:before {
   content: "\e649";
 }
+.icon-refresh:before {
+  content: "\ea29";
+}
 
 
 
@@ -44,7 +47,17 @@
 .clearfix {
   *zoom: 1;
 }
-
+/* 解决出现滚动条时抖动问题 */
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+body {
+  width: 100vw;
+  overflow: hidden;
+  min-height: 100vh;
+  padding-right: calc(100vw - 100%);
+}
 /*
  *自适应img 
  */

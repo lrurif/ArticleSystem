@@ -8,7 +8,10 @@ const Home = _import('home/home')
 const login = _import('login')
 const register = _import('register')
 const index = _import('home/main/index')
+const zhuanlan = _import('home/zhuanlan/index')
+const follow = _import('home/follow/index')
 const userHome = _import('userHome/index')
+const setting = _import('setting/index')
 
 const admin = _import('admin/index')
 const websiteUser = _import('admin/websiteUser/index')
@@ -16,6 +19,7 @@ const vacUser = _import('admin/vacUser/index')
 /* 同步加载 */
 // const Table = _import('Table@brain');
 // const Index = _import('index@brainone');
+const write = _import('write/index') //写文章页面
 
 Vue.use(Router)
 
@@ -36,6 +40,12 @@ export const constantRouterMap = [
     path: '/register',
     name:'register',
     component: register, 
+    hidden: true 
+  },
+  { 
+    path: '/write',
+    name:'write',
+    component: write, 
     hidden: true 
   },
   // 管理员路由
@@ -76,6 +86,22 @@ export const constantRouterMap = [
         },
         component: index
       },
+      {
+        path: '/home/zhuanlan',
+        name: 'zhuanlan',
+        meta: {
+          title: '专栏',
+        },
+        component: zhuanlan
+      },
+      {
+        path: '/home/follow',
+        name: 'follow',
+        meta: {
+          title: '关注',
+        },
+        component: follow
+      }
       
     ]
   },
@@ -84,6 +110,11 @@ export const constantRouterMap = [
     path: '/userHome',
     name: 'userHome',
     component: userHome
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: setting
   }
 ]
 let router=new Router({
