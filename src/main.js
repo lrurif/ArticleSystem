@@ -7,6 +7,7 @@ import ViewUI from 'view-design'
 import 'view-design/dist/styles/iview.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import store from './store/index'
 Vue.use(ViewUI)
 Vue.use(mavonEditor)
 Vue.config.productionTip = false
@@ -15,6 +16,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

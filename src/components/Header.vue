@@ -36,7 +36,6 @@
   export default {
     name: 'showheader',
     created() {
-      console.log(this.$route)
     },
     data() {
       return {
@@ -101,17 +100,19 @@
           line-height: 58px;
           position: relative;
           .input-search {
-            width: 240px;
+            width: 150px;
             height: 36px;
             border: none;
-            border-radius: 20px;
+            border-radius: 5px;
             background: #f0f0f0;
             padding-left: 20px;
             padding-right: 25px;
             position: relative;
+            transition: width 1s ease;
           }
           .input-search:focus {
             outline:none;
+            width: 240px;
           }
           .sousuo {
             position: absolute;
@@ -153,7 +154,7 @@
           font-size: 15px;
           color: #fff;
           border: none;
-          border-radius: 20px;
+          border-radius: 5px;
         }
         
       }

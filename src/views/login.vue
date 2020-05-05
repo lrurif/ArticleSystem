@@ -5,46 +5,68 @@
 			<b>.</b>
 			<router-link :to="{ name: 'register'}" class="register">注册</router-link>
 		</div>
-		<form class="login-form" method="post">
+		<div class="login-form">
 			<div class="user-name">
-				<input type="text" name="userName" placeholder="用户名">
+				<input type="text" name="userName" v-model="userName" placeholder="用户名">
 			</div>
 			<div class="password">
-				<input type="password" name="password" placeholder="密码">
+				<input type="password" name="password" v-model="password" placeholder="密码">
 			</div>
 				<input type="button" value="登录" class="submit" @click="dbclick">
-		</form>
+		</div>
 	</div>
 </template>
 
 <script>
+import {login} from "../api/user"
 export default {
     created() {
         document.title = "登录";
     },
+    data() {
+        return {
+            userName: "",
+            password: ""
+        }
+    },
     methods: {
         dbclick() {
-            this.$toast({
-                content:"show me",
-                duration: 1000
-            });
+            if(this.userName=="" || this.password=="") {
+                this.$Message.error('用户名或密码不能为空');
+                return;
+            }
+            var data = {};
+            data.userName = this.userName;
+            data.password = this.password;
+            login(data).then(res=> {
+                if(res.data.message=="success") {
+                    this.$Message.success('登录成功');
+                    this.$store.commit("setUserId",res.data.id);
+                    this.$store.commit("setUserName",res.data.userName);
+                    setTimeout(()=> {
+                        this.$router.push("/");
+                    },1000);
+                }else {
+                    this.$Message.error('用户名或密码错误');
+                    this.userName = '';
+                    this.password = '';
+                }
+            })
         }
     }
 }
 </script>
 
-<style lang="less">
-    body {
-	background-color:#f1f1f1;
-    }
+<style lang="less" scoped>
     .login-wrapper {
         width: 400px;
-        margin: 60px auto 0;
+        margin: 0 auto;
         text-align: center;
         padding: 50px;
         background: #fff;
         box-sizing: border-box;
-        position:relative;
+        position: relative;
+        margin-top: 60px;
         .login-head {
             .login,.register {
                 padding: 10px;

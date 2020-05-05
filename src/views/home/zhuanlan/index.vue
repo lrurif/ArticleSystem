@@ -1,6 +1,12 @@
 <template>
   <div class="div-zhuanlan">
-    <h1 class="zhuanlan-title">专栏·发现</h1>
+    <div class="zhuanlan-top clearfix">
+      <h1 class="zhuanlan-title"><i class="iconfont icon-edit"></i>专栏·发现</h1>
+      <button class="btn-add" title="添加你的专栏">
+        <i class="iconfont icon-refresh"></i>&nbsp;&nbsp;添加专栏
+      </button>
+    </div>
+
     <div class="zhuanlan-body">
       <div v-for="(item,index) in test_data" :key="index" class="zhuanlan-content">
         <img :src="item.img" class="zhuanlan-img" />
@@ -14,7 +20,9 @@
       </div>
     </div>
     <div class="zhuanlan-change">
-      <button class="btn-change"><i class="iconfont icon-refresh"></i>&nbsp;&nbsp;换一批</button>
+      <button class="btn-change" title="换一批">
+        <i class="iconfont icon-refresh"></i>&nbsp;&nbsp;换一批
+      </button>
     </div>
   </div>
 </template>
@@ -91,11 +99,27 @@ export default {
 .div-zhuanlan {
   width: 960px;
   margin: 0 auto;
-  .zhuanlan-title {
-    text-align: center;
-    font-size: 20px;
+  .zhuanlan-top {
     margin-top: 20px;
+    .zhuanlan-title {
+      font-size: 20px;
+      float: left;
+      .icon-edit {
+        color: #2d8cf0;
+        margin-right: 17px;
+        font-size: 20px;
+      }
+    }
+    .btn-add {
+      float: right;
+      border: 1px solid #009966;
+      color: #009966;
+      padding: 10px 20px;
+      background: #fff;
+      border-radius: 4px;
+    }
   }
+
   .zhuanlan-body {
     display: flex;
     flex-wrap: wrap;
@@ -146,19 +170,19 @@ export default {
     }
   }
   .zhuanlan-change {
-      margin-top: 50px;
-      text-align: center;
-      .btn-change {
-          border: 1px solid #000;
-          color: #000;
-          padding: 10px 20px;
-          background: #fff;
-          outline: none;
-          border-radius: 4px;
-      }
-      .btn-change:hover {
-          background: #faf9f9;
-      }
+    margin-top: 50px;
+    text-align: center;
+    .btn-change {
+      border: 1px solid #000;
+      color: #000;
+      padding: 10px 20px;
+      background: #fff;
+      outline: none;
+      border-radius: 4px;
+    }
+    .btn-change:hover {
+      background: #faf9f9;
+    }
   }
 }
 </style>

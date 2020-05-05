@@ -5,33 +5,65 @@
 			<b>.</b>
 			<router-link :to="{ name: 'register'}" class="register actived">注册</router-link>
 		</div>
-		<form class="register-form" method="post" action="user_register">
+		<div class="register-form">
 			<div class="user-name">
-				<input type="text" name="userName" placeholder="请输入用户名">
+				<input type="text" v-model="userName" name="userName" placeholder="请输入用户名">
 			</div>
 			<div class="password" style="border-radius:0;border-bottom:none;">
-				<input type="password" name="password" placeholder="设置密码">
+				<input type="password" v-model="password" name="password" placeholder="设置密码">
 			</div>
 			<div class="password">
-				<input type="password" name="rePassword" placeholder="请输入重复密码">
+				<input type="password" v-model="repassword" name="rePassword" placeholder="请输入重复密码">
 			</div>
-				<input type="submit" value="注册" class="submit register-btn">
-		</form>
+				<input type="button" value="注册" class="submit register-btn" @click="register">
+		</div>
 	</div>
 </template>
 
 <script>
+import {register} from "../api/user"
 export default {
     created() {
         document.title = "注册";
+    },
+    data() {
+        return {
+            userName: '',
+            password: '',
+            repassword: ''
+        }
+    },
+    methods: {
+        register() {
+            if(this.userName.length<4) {
+                this.$Message.error("用户名长度不能小于4位");
+                return;
+                this.$Message.error("密码长度不能小于8位");
+                return;
+            }else if(this.repassword!==this.password) {
+                this.$Message.error("密码与确认密码不同");
+                return;
+            }else {
+                var data = {};
+                data.userName = this.userName;
+                data.password = this.password;
+                register(data).then(res=> {
+                    if(res.data.message==='用户名已被注册') {
+                        this.$Message.error("用户名已被注册");
+                    }else {
+                         this.$Message.success("注册成功");
+                    }
+                    this.userName = '';
+                    this.password = '';
+                    this.repassword = '';
+                })
+            }
+        }
     }
 }
 </script>
 
-<style lang="less">
-    body {
-	background-color:#f1f1f1;
-    }
+<style lang="less" scoped>
     .register-wrapper {
         width: 400px;
         margin: 60px auto 0;
