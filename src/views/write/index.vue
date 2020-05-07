@@ -8,13 +8,13 @@
       </div>
     </div>
     <div class="write-body">
-      <input type="text" placeholder="请输入标题" class="input-title" />
-      <div v-if="img">
-        <img :src="img" @click="add_img" class="covers" title="封面图" />
+      <input type="text" v-model="article.title" placeholder="请输入标题" class="input-title" />
+      <div v-if="article.img">
+        <img :src="article.img" @click="add_img" class="covers" title="封面图" />
       </div>
       <p v-else class="add-img" title="封面图" @click="add_img">+</p>
       <input hidden type="file" name="imageFile" @change="uploadImg" class="uploadFile" />
-      <textarea class="textarea-abstract" placeholder="请输入文章摘要，最大字数200" maxlength="200"></textarea>
+      <textarea class="textarea-abstract" placeholder="请输入文章摘要，最大字数200" maxlength="200" v-model="article.abstract"></textarea>
       <mavon-editor
         v-model="value"
         ref="mdEditor"
@@ -25,29 +25,52 @@
       />
     </div>
 
-    <div class="markdown-body" v-html="readmeContent"></div>
+    <div class="markdown-body" v-html="article.content"></div>
   </div>
 </template>
 
 <script>
 import { uploadSingle, uploadMultiple } from "../../api/upload";
+import {articleAdd} from "../../api/article"
 // import marked from "marked";
 // import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 export default {
   mounted() {
-    this.$refs.mdEditor.change = function(value, render) {};
+    var _this = this;
+    this.$refs.mdEditor.change = function(value, render) {
+        _this.article.content = render;
+    }
+    this.article.userId = this.userId;
+  },
+  computed: {
+      userId() {
+          return this.$store.state.user.userId;
+      }
   },
   data() {
     return {
       value: "",
-      img: "",
       imgFile: {},
-      readmeContent: ""
+      article: {
+          title: '',
+          img: "",
+          abstract:'',
+          content: ''
+      }
     };
   },
   methods: {
-    publish_article() {},
+    publish_article() {
+        articleAdd(this.article).then(res=> {
+          if(res.data.code === 200) {
+            this.$Message.success("发布成功");
+            setTimeout(()=> {
+              this.$route.push("/");
+            },1000)
+          }
+        })
+    },
     add_img() {
       document.querySelector(".uploadFile").click();
     },
@@ -59,7 +82,7 @@ export default {
       var file = document.querySelector(".uploadFile").files[0];
       formData.append("imageFile", file);
       uploadSingle(formData).then(res => {
-        this.img = res.data.path;
+        this.article.img = res.data.path;
       });
       //   let files = document.querySelector(".uploadFile").files;
       //   for (let i = 0; i < files.length; i++) {
@@ -96,7 +119,6 @@ export default {
     },
     handleEditorImgDel(pos) {
       delete this.imgFile[pos];
-      console.log(this.value);
     }
   }
 };

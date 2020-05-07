@@ -4,17 +4,17 @@
       <Col span="16">
         <div class="div-left-area">
           <div v-for="(item,index) in articleList" :key="index" class="link-article">
-            <div :class="{'div-content':true,'hasImg':item.image?true:false}">
-              <p class="title">{{item.title}}</p>
-              <p class="content">{{item.content}}</p>
+            <div :class="{'div-content':true,'hasImg':item.article_img?true:false}">
+              <p @click="check_detail(item.article_id)" class="title">{{item.article_title}}</p>
+              <p class="content">{{item.article_abstract}}</p>
               <p class="article_nums">
                 <span :class="{'btn-like':true,'is-like':item.isLike?true:false}"><Icon type="ios-heart" /> {{item.isLike?"已赞同":"赞同"}} {{item.likes}}</span>
-                <span class="article-author">{{item.author}}</span>
-                <span><Icon type="md-eye" /> {{item.pageviews}}人浏览</span>
-                <span><i class="iconfont">&#xe61b;</i> {{item.comments}}条评论</span>
+                <span class="article-author">{{item.realName}}</span>
+                <span><Icon type="md-eye" /> {{item.article_reading}}人浏览</span>
+                <span><i class="iconfont">&#xe61b;</i> {{item.comments_num}}条评论</span>
               </p>
             </div>
-            <img v-if="item.image" :src="item.image" class="article-img">
+            <img v-if="item.article_img" :src="item.article_img" class="article-img">
           </div>
         </div>
         
@@ -30,34 +30,37 @@
 <script>
 import RecommendAuthor from "@/components/RecommendAuthor.vue"
 import asideBox from "@/components/aside-box.vue"
+import {getArticle} from "../../../api/article"
 export default {
   components: {
     RecommendAuthor,
     asideBox
   },
+  created() {
+    console.log(this.userId)
+    if(!this.userId) {
+      this.$router.push("/login")
+    }
+    getArticle({
+      page:1,
+      size:10,
+      id:this.userId
+    }).then(res=> {
+      this.articleList = res.data.data;
+    })
+  },
+  mounted() {
+  },
+  computed: {
+    userId() {
+          return this.$store.state.user.userId;
+      }
+  },
   data() {
     return {
       editor:"",
       temp_str:'',
-      articleList:[{
-        author:"小明同学",
-        likes:300,
-        title:"提高效率必备：超强搜索神器，绝对值得拥有！",
-        content:"根据中国互联网络信息中心（CNNIC）近日发布第 44 次《中国互联网络发展状况统计报告》。截至 2019 年 06 月，中国网民规模为 8.5联网络发展状况统计报告》。联网络发展状况统计报告》。联网络发展状况统计报告》。",
-        image:"../../../../static/img/loading.jpg",
-        pageviews:2000,
-        comments:10,
-        isLike: true
-      },{
-        author:"lruri",
-        likes:300,
-        title:"123123",
-        content:"根据中国互联网络信息中心（CNNIC）近日发布第 44 次《中国互联网络发展状况统计报告》。截至 2019 年 06 月，中国网民规模为 8.5联网络发展状况统计报告》。联网络发展状况统计报告》。联网络发展状况统计报告》。",
-        pageviews:2000,
-        pageviews:2000,
-        comments:10,
-        isLike: false
-      }],
+      articleList:[],
       authorList: [
         {
           url:"../../../static/img/userName.png",
@@ -82,9 +85,10 @@ export default {
       ]
     }
   },
-  mounted() {
-  },
   methods: {
+    check_detail(id) {
+      this.$router.push('/article/'+id)
+    }
   }
 }
 </script>
@@ -95,6 +99,7 @@ export default {
         margin: 0 auto;
         margin-top: 20px;
         .div-left-area {
+          min-height: 20px;
           .link-article {
             position: relative;
             padding: 15px 2px 20px 0;
