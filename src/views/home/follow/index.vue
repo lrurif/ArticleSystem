@@ -116,7 +116,7 @@ export default {
 
 <style lang="less" scoped>
 .div-follow {
-  width: 960px;
+  width: 1160px;
   margin: 0 auto;
   margin-top: 20px;
   .div-left-area {

@@ -195,7 +195,7 @@ export default {
 
 <style lang="less" scoped>
 .user-component {
-  width: 960px;
+  width: 1160px;
   margin: 0 auto;
   margin-top: 30px;
   .div-info-wrapper {

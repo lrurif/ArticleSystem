@@ -120,7 +120,7 @@ export default {
     min-width: 80px;
   }
   .container {
-    width: 960px;
+    width: 1160px;
     overflow: hidden;
     min-width: 300px;
     .ul-nav {
@@ -165,6 +165,7 @@ export default {
         .sousuo {
           position: absolute;
           right: 10px;
+          cursor: pointer;
         }
       }
     }

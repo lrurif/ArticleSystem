@@ -3,41 +3,27 @@
     <div class="write-head">
       <div class="wirte-head-body">
         <router-link :to="{ path: '/'}" class="logo">博 群</router-link>
-        <h1 class="title">写文章</h1>
-        <button class="publish-article" @click="publish_article">发布文章</button>
+        <h1 class="title">新增专栏</h1>
+        <button class="publish-zhuanlan" @click="publish_zhuanlan">发布专栏</button>
       </div>
     </div>
     <div class="write-body">
-      <input type="text" v-model="article.title" placeholder="请输入标题" class="input-title" />
-        <img v-if="article.img" :src="article.img" @click="add_img" class="covers" title="封面图" />
+      <input type="text" v-model="zhuanlan.title" placeholder="请输入标题" class="input-title" />
+        <img v-if="zhuanlan.img" :src="zhuanlan.img" @click="add_img" class="covers" title="封面图" />
       <p v-else class="add-img" title="封面图" @click="add_img">+</p>
       <input hidden type="file" name="imageFile" @change="uploadImg" class="uploadFile" />
-      <textarea class="textarea-abstract" placeholder="请输入文章摘要，最大字数200" maxlength="200" v-model="article.abstract"></textarea>
-      <mavon-editor
-        v-model="value"
-        ref="mdEditor"
-        :shortCut="false"
-        :ishljs="true"
-        @imgAdd="handleEditorImgAdd"
-        @imgDel="handleEditorImgDel"
-      />
+      <textarea class="textarea-abstract" placeholder="请输入专栏简介，最大字数200" maxlength="200" v-model="zhuanlan.abstract"></textarea>
     </div>
+
   </div>
 </template>
 
 <script>
 import { uploadSingle, uploadMultiple } from "../../api/upload";
-import {articleAdd} from "../../api/article"
-// import marked from "marked";
-// import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
+import {add} from "../../api/zhuanlan"
 export default {
   mounted() {
-    var _this = this;
-    this.$refs.mdEditor.change = function(value, render) {
-        _this.article.content = render;
-    }
-    this.article.userId = this.userId;
+    this.zhuanlan.userId = this.userId;
   },
   computed: {
       userId() {
@@ -48,21 +34,20 @@ export default {
     return {
       value: "",
       imgFile: {},
-      article: {
+      zhuanlan: {
           title: '',
           img: "",
           abstract:'',
-          content: ''
       }
     };
   },
   methods: {
-    publish_article() {
-        articleAdd(this.article).then(res=> {
+    publish_zhuanlan() {
+        add(this.zhuanlan).then(res=> {
           if(res.data.code === 200) {
             this.$Message.success("发布成功");
             setTimeout(()=> {
-              this.$route.push("/");
+              this.$route.push("/home/zhuanlan");
             },1000)
           }
         })
@@ -78,43 +63,13 @@ export default {
       var file = document.querySelector(".uploadFile").files[0];
       formData.append("imageFile", file);
       uploadSingle(formData).then(res => {
-        this.article.img = res.data.path;
+        this.zhuanlan.img = res.data.path;
       });
       //   let files = document.querySelector(".uploadFile").files;
       //   for (let i = 0; i < files.length; i++) {
       //     formData.append("imageFile", files[i]);
       //   }
       //   uploadMultiple(formData).then(res => {});
-    },
-    handleEditorImgAdd(pos, $file) {
-      let formdata = new FormData();
-      formdata.append("imageFile", $file);
-      this.imgFile[pos] = $file;
-      uploadSingle(formdata).then(res => {
-        if (res.data.code === 200) {
-          this.$Message.success("上传");
-          let url = res.data.path;
-          let name = $file.name;
-          if (name.includes("-")) {
-            name = name.replace(/-/g, "");
-          }
-          let content = this.value;
-          // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)  这里是必须要有的
-          if (content.includes(name)) {
-            let oStr = `(${pos})`;
-            let nStr = `(${url})`;
-            let index = content.indexOf(oStr);
-            let str = content.replace(oStr, "");
-            let insertStr = (soure, start, newStr) => {
-              return soure.slice(0, start) + newStr + soure.slice(start);
-            };
-            this.value = insertStr(str, index, nStr);
-          }
-        }
-      });
-    },
-    handleEditorImgDel(pos) {
-      delete this.imgFile[pos];
     }
   }
 };
@@ -139,7 +94,7 @@ export default {
       .title {
         display: inline-block;
       }
-      .publish-article {
+      .publish-zhuanlan {
         height: 40px;
         line-height: 40px;
         background: #2d8cf0;
@@ -151,7 +106,7 @@ export default {
         border: none;
         outline: none;
       }
-      .publish-article:hover {
+      .publish-zhuanlan:hover {
         background: #1d70c7;
       }
     }

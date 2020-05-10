@@ -45,7 +45,7 @@ export default {
 <style lang="less" scoped>
     .div-setting {
         .person-setting {
-            width: 960px;
+            width: 1160px;
             margin: 0 auto;
             padding: 20px;
             .div-avatar {

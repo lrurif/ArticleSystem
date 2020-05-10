@@ -117,11 +117,9 @@ export default {
                     content: '选项不能为空'
                 });
                 }else {
-                    console.dir(this.table_checked)
                 }
             },
             edit (index) {
-                console.log(this.data1[index])
             },
             remove (index) {
                 this.data1.splice(index, 1);

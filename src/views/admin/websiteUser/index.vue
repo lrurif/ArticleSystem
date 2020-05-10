@@ -136,7 +136,6 @@ export default {
     },
     methods: {
             edit (index) {
-                console.log(this.data1[index])
             },
             remove (index) {
                 this.data1.splice(index, 1);

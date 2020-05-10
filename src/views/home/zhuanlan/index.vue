@@ -2,7 +2,7 @@
   <div class="div-zhuanlan">
     <div class="zhuanlan-top clearfix">
       <h1 class="zhuanlan-title"><i class="iconfont icon-edit"></i>专栏·发现</h1>
-      <button class="btn-add" title="添加你的专栏">
+      <button class="btn-add" title="添加你的专栏" @click="go_addZhuanLan">
         <i class="iconfont icon-refresh"></i>&nbsp;&nbsp;添加专栏
       </button>
     </div>
@@ -91,13 +91,18 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    go_addZhuanLan() {
+      this.$router.push("/addZhuanLan");
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
 .div-zhuanlan {
-  width: 960px;
+  width: 1160px;
   margin: 0 auto;
   .zhuanlan-top {
     margin-top: 20px;

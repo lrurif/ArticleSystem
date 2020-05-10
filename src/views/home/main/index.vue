@@ -8,7 +8,7 @@
               <p @click="check_detail(item.article_id)" class="title">{{item.article_title}}</p>
               <p class="content">{{item.article_abstract}}</p>
               <p class="article_nums">
-                <span :class="{'btn-like':true,'is-like':item.isLike?true:false}"><Icon type="ios-heart" /> {{item.isLike?"已赞同":"赞同"}} {{item.likes}}</span>
+                <span @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}"><Icon type="ios-heart" /> {{item.isLike?"已赞同":"赞同"}} {{item.likes}}</span>
                 <span class="article-author">{{item.realName}}</span>
                 <span><Icon type="md-eye" /> {{item.article_reading}}人浏览</span>
                 <span><i class="iconfont">&#xe61b;</i> {{item.comments_num}}条评论</span>
@@ -17,7 +17,6 @@
             <img v-if="item.article_img" :src="item.article_img" class="article-img">
           </div>
         </div>
-        
       </Col>
       <Col span="8">
         <aside-box></aside-box>
@@ -30,14 +29,13 @@
 <script>
 import RecommendAuthor from "@/components/RecommendAuthor.vue"
 import asideBox from "@/components/aside-box.vue"
-import {getArticle} from "../../../api/article"
+import {getArticle, likeArticle} from "../../../api/article"
 export default {
   components: {
     RecommendAuthor,
     asideBox
   },
   created() {
-    console.log(this.userId)
     if(!this.userId) {
       this.$router.push("/login")
     }
@@ -88,6 +86,26 @@ export default {
   methods: {
     check_detail(id) {
       this.$router.push('/article/'+id)
+    },
+    agree(index) {
+      if(this.articleList[index].isLike) {
+        likeArticle({
+          id: this.userId,
+          article_id: this.articleList[index].article_id,
+          type: 'cancel'
+        }).then(res=> {
+
+        })
+      }else {
+        likeArticle({
+          id: this.userId,
+          article_id: this.articleList[index].article_id,
+          type: 'add'
+        }).then(res=> {
+          
+        })
+      }
+      this.articleList[index].isLike = !this.articleList[index].isLike;
     }
   }
 }
@@ -95,7 +113,7 @@ export default {
 
 <style lang="less" scoped>
     .main-area {
-        width: 960px;
+        width: 1160px;
         margin: 0 auto;
         margin-top: 20px;
         .div-left-area {

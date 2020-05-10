@@ -13,6 +13,8 @@ const follow = _import('home/follow/index')
 const userHome = _import('userHome/index')
 const setting = _import('setting/index')
 const article = _import('article/index')
+// 新增专栏
+const addZhuanLan = _import('addZhuanLan/index')
 
 const admin = _import('admin/index')
 const websiteUser = _import('admin/websiteUser/index')
@@ -121,6 +123,11 @@ export const constantRouterMap = [
     path: '/article/:id',
     name: 'article',
     component: article
+  },
+  {
+    path: '/addZhuanLan',
+    name: 'addZhuanLan',
+    component: addZhuanLan
   }
 ]
 let router=new Router({
