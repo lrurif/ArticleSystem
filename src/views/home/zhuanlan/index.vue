@@ -6,20 +6,20 @@
         <i class="iconfont icon-refresh"></i>&nbsp;&nbsp;添加专栏
       </button>
     </div>
-
-    <div class="zhuanlan-body">
+    <loading v-if="isLoading" class="loading"></loading>
+    <div v-else class="zhuanlan-body">
       <div v-for="(item,index) in test_data" :key="index" class="zhuanlan-content">
-        <img :src="item.img" class="zhuanlan-img" />
-        <p class="zhuanlan-name">{{item.title}}</p>
-        <p class="zhuanlan-describe">{{item.describe}}</p>
+        <img :src="item.zhuanlan_img" class="zhuanlan-img" />
+        <p class="zhuanlan-name">{{item.zhuanlan_name}}</p>
+        <p class="zhuanlan-describe">{{item.zhuanlan_abstract}}</p>
         <p class="zhuanlan-num">
-          <span>{{item.focus}}人关注</span>&nbsp;|&nbsp;
+          <span>{{item.focus_num}}人关注</span>&nbsp;|&nbsp;
           <span>{{item.article_num}}篇文章</span>
         </p>
         <button class="zhuanlan-btn">进入专栏</button>
       </div>
     </div>
-    <div class="zhuanlan-change">
+    <div class="zhuanlan-change" @click="change">
       <button class="btn-change" title="换一批">
         <i class="iconfont icon-refresh"></i>&nbsp;&nbsp;换一批
       </button>
@@ -28,7 +28,12 @@
 </template>
 
 <script>
+import {getRecommend} from "@/api/zhuanlan"
+import loading from "@/components/loading.vue"
 export default {
+  created() {
+    this.init();
+  },
   data() {
     return {
       test_data: [
@@ -89,12 +94,30 @@ export default {
           focus: 1200,
           article_num: 120
         }
-      ]
+      ],
+      isLoading: true
     };
   },
+  components: {
+    loading
+  },
   methods: {
+    init() {
+      getRecommend().then(res=> {
+      this.test_data = res.data;
+      // 测试效果
+      setTimeout(()=> {
+        this.isLoading = false;
+      },1000)
+      
+    })
+    },
     go_addZhuanLan() {
       this.$router.push("/addZhuanLan");
+    },
+    change() {
+      this.isLoading = true;
+      this.init();
     }
   }
 };
@@ -124,11 +147,13 @@ export default {
       border-radius: 4px;
     }
   }
-
+  .loading {
+    height: 1180px;
+  }
   .zhuanlan-body {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    // justify-content: space-between;
     margin-top: 20px;
     .zhuanlan-content {
       width: 24%;
@@ -172,6 +197,9 @@ export default {
         border-radius: 5px;
         background: #fff;
       }
+    }
+    .zhuanlan-content:not(:nth-child(4n)) {
+      margin-right: 15px;
     }
   }
   .zhuanlan-change {

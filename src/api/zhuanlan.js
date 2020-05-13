@@ -6,3 +6,10 @@ export function add(data) {
         data
     })
 }
+export function getRecommend(data) {
+    return fetch({
+        url: 'zhuanlan/getRecommend',
+        method: 'post',
+        data
+    })
+}

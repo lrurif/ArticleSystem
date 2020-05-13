@@ -110,7 +110,7 @@ export const constantRouterMap = [
   },
   //普通用户路由
   {
-    path: '/userHome',
+    path: '/userHome/:userId',
     name: 'userHome',
     component: userHome
   },

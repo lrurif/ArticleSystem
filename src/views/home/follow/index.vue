@@ -8,6 +8,10 @@
             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
           <ul class="follow-list">
+            <li class="li-follow"  :class="{'current-type':currentAuthor=='全部文章'}">
+              <img src="../../../../static/img/loading.jpg" class="avatar" />
+               <div class="follow-name">全部文章</div>
+            </li>
             <li
               v-for="(item,index) in followList"
               :key="index"
@@ -33,7 +37,7 @@
               <p class="article_nums">
                 <span :class="{'btn-like':true,'is-like':item.isLike?true:false}">
                   <Icon type="ios-heart" />
-                  {{item.isLike?"已赞同":"赞同"}} {{item.likes}}
+                  {{item.isLike?"已点赞":"点赞"}} {{item.likes}}
                 </span>
                 <span>
                   <Icon type="md-eye" />
@@ -71,7 +75,7 @@ export default {
           label: "作者"
         }
       ],
-      currentAuthor: "lruri",
+      currentAuthor: "全部文章",
       model1: "全部关注",
       followList: [
         {

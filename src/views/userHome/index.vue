@@ -137,6 +137,17 @@ import RecommendAuthor from "@/components/RecommendAuthor.vue";
 import RecommendSubject from "@/components/RecommendSubject.vue";
 import test from "@/components/test.vue";
 export default {
+  created() {
+    console.log(this.userId)
+  },
+  computed: {
+    userId() {
+      return this.$route.params.userId
+    },
+    loginId() {
+      return this.$store.state.user.userId;
+    }
+  },
   data() {
     return {
       isMale: true,

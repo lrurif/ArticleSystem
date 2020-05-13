@@ -40,12 +40,12 @@
     <div class="right-header" v-if="userId">
       <Dropdown placement="top-start" @on-click="loginOut">
         <div class="head-img">
-          <router-link :to="{ path: '/userHome'}" class="person-center">
+          <router-link :to="{ path: `/userHome/${userId}`}" class="person-center">
             <img src="../../static/img/userName.png" class="img-head" />
           </router-link>
         </div>
         <DropdownMenu slot="list">
-          <router-link :to="{ path: '/userHome'}">
+          <router-link :to="{ path: `/userHome/${userId}`}">
             <DropdownItem>我的主页</DropdownItem>
           </router-link>
           <router-link :to="{ path: '/find'}">

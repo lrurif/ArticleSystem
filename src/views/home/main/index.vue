@@ -8,8 +8,8 @@
               <p @click="check_detail(item.article_id)" class="title">{{item.article_title}}</p>
               <p class="content">{{item.article_abstract}}</p>
               <p class="article_nums">
-                <span @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}"><Icon type="ios-heart" /> {{item.isLike?"已赞同":"赞同"}} {{item.likes}}</span>
-                <span class="article-author">{{item.realName}}</span>
+                <span @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}"><Icon type="ios-heart" /> {{item.isLike?"已点赞":"点赞"}} {{item.likes}}</span>
+                <router-link :to="{path: `/userHome/${item.user_id}`}"><span class="article-author">{{item.realName}}</span></router-link>
                 <span><Icon type="md-eye" /> {{item.article_reading}}人浏览</span>
                 <span><i class="iconfont">&#xe61b;</i> {{item.comments_num}}条评论</span>
               </p>
@@ -169,6 +169,7 @@ export default {
                 }
                 .article-author {
                   cursor: pointer;
+                  color: #515a6e;
                 }
               }
             }
