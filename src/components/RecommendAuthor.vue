@@ -6,10 +6,10 @@
       </div>
       <ul class="ul-recommend-author">
           <li v-for="(item,index) in authorList" :key="index" class="li-author clearfix">
-              <img :src="item.url" class="img-author">
+              <img :src="item.avatar||'../../static/img/loading.jpg'" class="img-author">
               <span class="span-follow">+关注</span>
-              <p class="p-name">{{item.name}}</p>
-              <p class="p-focus-nums">{{item.focus}}人已关注</p>
+              <p class="p-name">{{item.realName}}</p>
+              <p class="p-focus-nums">{{item.focus_num}}人已关注</p>
               
           </li>
       </ul>
@@ -18,11 +18,23 @@
 </template>
 
 <script>
+import {getUserRecommend} from "@/api/user"
 export default {
     props: {
-        authorList: {
-        type:Array,
-        default: []
+        // authorList: {
+        // type:Array,
+        // default: []
+        // }
+    },
+    created() {
+        getUserRecommend().then(res=> {
+            this.authorList = res.data;
+            console.log(res)
+        })
+    },
+    data() {
+        return {
+            authorList: []
         }
     }
 }
@@ -54,6 +66,7 @@ export default {
                 .span-follow {
                     float: right;
                     line-height: 50px;
+                    cursor: pointer;
                     color: #42c02e;
                 }
                 .p-name {

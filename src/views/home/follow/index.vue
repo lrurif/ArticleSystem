@@ -4,53 +4,45 @@
     <Row :gutter="40">
       <Col span="8">
         <div class="div-left-area">
-          <Select v-model="model1" style="width:200px">
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select v-model="currentType" style="width:200px" @on-change="changeType">
+            <Option
+              v-for="item in chooseList"
+              :value="item.value"
+              :key="item.value"
+            >{{ item.label }}</Option>
           </Select>
           <ul class="follow-list">
-            <li class="li-follow"  :class="{'current-type':currentAuthor=='全部文章'}">
+            <li class="li-follow" :class="{'current-type':currentAuthor=='作者文章'}" @click="find_zhuanlan_article('','作者文章',)">
               <img src="../../../../static/img/loading.jpg" class="avatar" />
-               <div class="follow-name">全部文章</div>
+              <div class="follow-name">作者文章</div>
             </li>
             <li
-              v-for="(item,index) in followList"
+              v-for="(item,index) in currentList"
               :key="index"
               class="li-follow"
-              :class="{'current-type':currentAuthor==item.name}"
+              :class="{'current-type':currentAuthor==(item.zhuanlan_name||item.userName)}"
+              @click="find_zhuanlan_article(item.focus_zhuanlan_id || item.focus_person_id,item.zhuanlan_name || item.userName,item.focus_zhuanlan_id?'zhuanlan':'author')"
             >
-              <img :src="item.avatar" class="avatar" />
-              <div class="follow-name">{{item.name}}</div>
-              <div
-                :class="{'isZhuanlan':item.type=='zhuanlan'}"
-                class="follow-type"
-              >{{item.type=="author"?"作者":"专栏"}}</div>
+              <div v-if="item.focus_zhuanlan_time">
+                <img :src="item.zhuanlan_img" class="avatar" />
+                <div class="follow-name">{{item.zhuanlan_name}}</div>
+                <div class="follow-type isZhuanlan">专栏主页</div>
+              </div>
+              <div v-else>
+                <img
+                  :src="item.avatar?item.avatar:'../../../../static/img/loading.jpg'"
+                  class="avatar"
+                />
+                <div class="follow-name">{{item.userName}}</div>
+                <div class="follow-type">作者主页</div>
+              </div>
             </li>
           </ul>
         </div>
       </Col>
       <Col span="16">
         <div class="div-right-area">
-          <div v-for="(item,index) in articleList" :key="index" class="link-article">
-            <div :class="{'div-content':true,'hasImg':item.image?true:false}">
-              <p class="title">{{item.title}}</p>
-              <p class="content">{{item.content}}</p>
-              <p class="article_nums">
-                <span :class="{'btn-like':true,'is-like':item.isLike?true:false}">
-                  <Icon type="ios-heart" />
-                  {{item.isLike?"已点赞":"点赞"}} {{item.likes}}
-                </span>
-                <span>
-                  <Icon type="md-eye" />
-                  {{item.pageviews}}人浏览
-                </span>
-                <span>
-                  <i class="iconfont">&#xe61b;</i>
-                  {{item.comments}}条评论
-                </span>
-              </p>
-            </div>
-            <img v-if="item.image" :src="item.image" class="article-img" />
-          </div>
+          <articleList :articleList="articleList"></articleList>
         </div>
       </Col>
     </Row>
@@ -58,62 +50,97 @@
 </template>
 
 <script>
+import { getFocusData } from "@/api/focus";
+import { getArticle } from "@/api/article";
+import articleList from "@/components/articleList";
 export default {
+  created() {
+    this.init();
+  },
+  computed: {
+    userId() {
+      return this.$store.state.user.userId;
+    }
+  },
+  components: {
+    articleList
+  },
   data() {
     return {
-      cityList: [
+      chooseList: [
         {
-          value: "全部关注",
+          value: "all",
           label: "全部关注"
         },
         {
-          value: "专题",
-          label: "专题"
+          value: "zhuanlan",
+          label: "专栏"
         },
         {
-          value: "作者",
+          value: "author",
           label: "作者"
         }
       ],
-      currentAuthor: "全部文章",
-      model1: "全部关注",
-      followList: [
-        {
-          avatar: "../../../../static/img/userName.png",
-          name: "lruri",
-          type: "author"
-        },
-        {
-          avatar: "../../../../static/img/userName.png",
-          name: "lrurif",
-          type: "zhuanlan"
-        }
-      ],
-      articleList: [
-        {
-          author: "小明同学",
-          likes: 300,
-          title: "提高效率必备：超强搜索神器，绝对值得拥有！",
-          content:
-            "根据中国互联网络信息中心（CNNIC）近日发布第 44 次《中国互联网络发展状况统计报告》。截至 2019 年 06 月，中国网民规模为 8.5联网络发展状况统计报告》。联网络发展状况统计报告》。联网络发展状况统计报告》。",
-          image: "../../../../static/img/loading.jpg",
-          pageviews: 2000,
-          comments: 10,
-          isLike: true
-        },
-        {
-          author: "lruri",
-          likes: 300,
-          title: "123123",
-          content:
-            "根据中国互联网络信息中心（CNNIC）近日发布第 44 次《中国互联网络发展状况统计报告》。截至 2019 年 06 月，中国网民规模为 8.5联网络发展状况统计报告》。联网络发展状况统计报告》。联网络发展状况统计报告》。",
-          pageviews: 2000,
-          pageviews: 2000,
-          comments: 10,
-          isLike: false
-        }
-      ]
+      currentAuthor: "作者文章",
+      currentType: "all",
+      followList: [],
+      currentList: [],
+      articleList: []
     };
+  },
+  methods: {
+    init() {
+      getFocusData({
+        userId: this.userId
+      }).then(res => {
+        this.followList = res.data.userList
+          .concat(res.data.zhuanlanList)
+          .sort((a, b) => {
+            return (
+              new Date(a.focus_person_time || a.focus_zhuanlan_time).getTime() -
+              new Date(b.focus_person_time || b.focus_zhuanlan_time).getTime()
+            );
+          });
+        this.currentList = JSON.parse(JSON.stringify(this.followList));
+        this.articleList = res.data.articleList;
+      });
+    },
+    changeType(value) {
+      if (value == "all") {
+        this.currentList = this.followList;
+      } else if (value == "zhuanlan") {
+        this.currentList = this.followList.filter(item => {
+          return item.zhuanlan_name;
+        });
+        console.log(this.currentList);
+      } else if (value == "author") {
+        this.currentList = this.followList.filter(item => {
+          return !item.zhuanlan_name;
+        });
+      }
+    },
+    find_zhuanlan_article(id, name, type) {
+      this.currentAuthor = name;
+      if (type == "zhuanlan") {
+        getArticle({
+          page: 1,
+          id: 6,
+          zhuanlan_id: id
+        }).then(res => {
+          this.articleList = res.data.data;
+        });
+      } else if(type=='author'){
+        getArticle({
+          page: 1,
+          id: 6,
+          author_id: id
+        }).then(res => {
+          this.articleList = res.data.data;
+        });
+      }else {
+        this.init();
+      }
+    }
   }
 };
 </script>
@@ -160,6 +187,7 @@ export default {
         border-radius: 5px;
         position: absolute;
         right: 10px;
+        top: 17px;
       }
       .isZhuanlan {
         border: 1px solid #1affb5;
@@ -168,74 +196,6 @@ export default {
     }
   }
   .div-right-area {
-    .link-article {
-      position: relative;
-      padding: 15px 2px 20px 0;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 30px;
-      margin-top: 10px;
-      .div-content {
-        .title {
-          font-size: 18px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-        .title:hover {
-          color: #175199;
-        }
-        .content {
-          font-size: 13px;
-          color: #999;
-          margin-top: 10px;
-          text-overflow: -o-ellipsis-lastline;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          line-clamp: 2;
-          -webkit-box-orient: vertical;
-        }
-        .article_nums {
-          margin-top: 20px;
-          span {
-            margin-right: 10px;
-          }
-          .btn-like {
-            background: rgba(0, 132, 255, 0.1);
-            padding: 10px 12px;
-            color: #0084ff;
-            cursor: pointer;
-            border-radius: 4px;
-          }
-          .btn-like:hover {
-            background: rgba(0, 132, 255, 0.2);
-          }
-          .is-like {
-            background: #0084ff;
-            color: #fff;
-          }
-          .is-like:hover {
-            background: #0084ff;
-          }
-          .article-author {
-            cursor: pointer;
-          }
-        }
-      }
-      .article-img {
-        width: 150px;
-        height: 100px;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        margin-top: -50px;
-        border: 1px solid #f0f0f0;
-        border-radius: 4px;
-      }
-      .hasImg {
-        padding-right: 160px;
-      }
-    }
   }
 }
 </style>

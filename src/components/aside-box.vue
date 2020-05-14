@@ -2,17 +2,23 @@
   <div class="special-column">
       <p class="aside-title">分类专栏</p>
       <div class="link-special" v-for="(item,index) in specialList" :key="index">
-          <img :src="item.url" class="special-img">
+          <img :src="item.zhuanlan_img||'../../static/img/loading.jpg'" class="special-img">
           <div>
-              <p class="special-title">{{item.title}}</p>
-              <p class="special-description">{{item.description}}</p>
+              <p class="special-title">{{item.zhuanlan_name}}</p>
+              <p class="special-description">{{item.zhuanlan_abstract}}</p>
           </div>
       </div>
   </div>
 </template>
 
 <script>
+import {getRecommend} from "@/api/zhuanlan"
 export default {
+    created() {
+        getRecommend().then(res=> {
+            this.specialList = res.data.splice(0,5);
+        })
+    },
     data() {
         return {
             specialList: [

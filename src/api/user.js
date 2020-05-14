@@ -14,3 +14,9 @@ export function register(data) {
         data
     })
 }
+export function getUserRecommend() {
+    return fetch( {
+        url: 'user/getRecommend',
+        method: 'post'
+    })
+}
