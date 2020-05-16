@@ -1,10 +1,10 @@
 <template>
   <div class="main-area">
+    <loading v-show="isLoading"></loading>
     <Row :gutter="40">
       <Col span="16">
         <div class="div-left-area">
           <articleList :articleList = articleList></articleList>
-          <loading v-show="isLoading"></loading>
         </div>
       </Col>
       <Col span="8">

@@ -15,6 +15,8 @@ const setting = _import('setting/index')
 const article = _import('article/index')
 // 新增专栏
 const addZhuanLan = _import('addZhuanLan/index')
+// 专栏主页面
+const zhuanlanDetail = _import('zhuanlan/index')
 
 const admin = _import('admin/index')
 const websiteUser = _import('admin/websiteUser/index')
@@ -128,6 +130,10 @@ export const constantRouterMap = [
     path: '/addZhuanLan',
     name: 'addZhuanLan',
     component: addZhuanLan
+  },{
+    path: '/zhuanlanDetail',
+    name: 'zhuanlanMain',
+    component: zhuanlanDetail
   }
 ]
 let router=new Router({

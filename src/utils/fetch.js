@@ -1,6 +1,6 @@
 import axios from 'axios'
 // 创建axios实例
-let baseUrl = "http://127.0.0.1:3000";
+let baseUrl = process.env.API_ROOT;
 // let tokenString = window.localStorage.getItem('storagetoken');
 const service = axios.create({
   baseURL: baseUrl, // api的base_url

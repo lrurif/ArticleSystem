@@ -2,7 +2,7 @@
   <div class="article-component">
     <div v-for="(item,index) in articleList" :key="index" class="link-article">
       <div :class="{'div-content':true,'hasImg':item.article_img?true:false}">
-        <p @click="check_detail(item.article_id)" class="title">{{item.article_title}}</p>
+        <p @click="check_detail(item.article_id,index)" class="title">{{item.article_title}}</p>
         <p class="content">{{item.article_abstract}}</p>
         <p class="article_nums">
           <span @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}">
@@ -44,7 +44,8 @@ export default {
       }
   },
   methods: {
-    check_detail(id) {
+    check_detail(id,index) {
+      this.articleList[index].article_reading++;
     //   编程式新建窗口
       let routeUrl = this.$router.resolve({
           path: "/article/"+id,
