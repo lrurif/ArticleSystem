@@ -16,7 +16,7 @@
           <span>{{item.focus_num}}人关注</span>&nbsp;|&nbsp;
           <span>{{item.article_num}}篇文章</span>
         </p>
-        <button class="zhuanlan-btn">进入专栏</button>
+        <router-link :to="{path:'../zhuanlanDetail'}"><button class="zhuanlan-btn">进入专栏</button></router-link>
       </div>
     </div>
     <div class="zhuanlan-change" @click="change">
@@ -105,10 +105,7 @@ export default {
     init() {
       getRecommend().then(res=> {
       this.test_data = res.data;
-      // 测试效果
-      setTimeout(()=> {
         this.isLoading = false;
-      },1000)
       
     })
     },

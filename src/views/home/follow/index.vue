@@ -12,7 +12,11 @@
             >{{ item.label }}</Option>
           </Select>
           <ul class="follow-list">
-            <li class="li-follow" :class="{'current-type':currentAuthor=='作者文章'}" @click="find_zhuanlan_article('','作者文章',)">
+            <li
+              class="li-follow"
+              :class="{'current-type':currentAuthor=='作者文章'}"
+              @click="find_zhuanlan_article('','作者文章',)"
+            >
               <img src="../../../../static/img/loading.jpg" class="avatar" />
               <div class="follow-name">作者文章</div>
             </li>
@@ -42,7 +46,7 @@
       </Col>
       <Col span="16">
         <div class="div-right-area">
-          <articleList :articleList="articleList"></articleList>
+          <articleList :articleList="articleList" :author="authorIsShow"></articleList>
         </div>
       </Col>
     </Row>
@@ -53,6 +57,7 @@
 import { getFocusData } from "@/api/focus";
 import { getArticle } from "@/api/article";
 import articleList from "@/components/articleList";
+import { getTime } from "@/utils/tool";
 export default {
   created() {
     this.init();
@@ -85,7 +90,8 @@ export default {
       currentType: "all",
       followList: [],
       currentList: [],
-      articleList: []
+      articleList: [],
+      authorIsShow: true
     };
   },
   methods: {
@@ -93,6 +99,9 @@ export default {
       getFocusData({
         userId: this.userId
       }).then(res => {
+        res.data.articleList.forEach(item => {
+          item.article_time = getTime(item.article_time);
+        });
         this.followList = res.data.userList
           .concat(res.data.zhuanlanList)
           .sort((a, b) => {
@@ -122,23 +131,32 @@ export default {
     find_zhuanlan_article(id, name, type) {
       this.currentAuthor = name;
       if (type == "zhuanlan") {
+        this.authorIsShow = true;
         getArticle({
           page: 1,
           id: 6,
           zhuanlan_id: id
         }).then(res => {
           this.articleList = res.data.data;
+          this.articleList.forEach(item => {
+            item.article_time = getTime(item.article_time);
+          });
         });
-      } else if(type=='author'){
+      } else if (type == "author") {
+        this.authorIsShow = false;
         getArticle({
           page: 1,
           id: 6,
           author_id: id
         }).then(res => {
           this.articleList = res.data.data;
+          this.articleList.forEach(item => {
+            item.article_time = getTime(item.article_time);
+          });
         });
-      }else {
+      } else {
         this.init();
+        this.authorIsShow = true;
       }
     }
   }

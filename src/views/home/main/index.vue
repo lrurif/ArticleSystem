@@ -21,6 +21,7 @@ import articleList from "@/components/articleList"
 import loading from "@/components/loading"
 import asideBox from "@/components/aside-box.vue"
 import {getArticle, likeArticle} from "../../../api/article"
+import {getTime} from "@/utils/tool"
 export default {
   components: {
     RecommendAuthor,
@@ -39,6 +40,10 @@ export default {
     }).then(res=> {
       this.isLoading = false;
       this.articleList = res.data.data;
+      this.articleList.forEach(item=> {
+        item.article_time = getTime(item.article_time);
+      })
+      console.log(this.articleList)
     })
   },
   mounted() {

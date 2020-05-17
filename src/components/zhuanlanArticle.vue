@@ -3,15 +3,19 @@
     <div v-for="(item,index) in articleList" :key="index" class="link-article">
       <div :class="{'div-content':true,'hasImg':item.article_img?true:false}">
         <p @click="check_detail(item.article_id,index)" class="title">{{item.article_title}}</p>
+        <p class="author">
+          <router-link :to="{path: `/userHome/${item.user_id}`}" v-if="author">
+            <img class="avatar" src="../../static/img/loading.jpg"><span class="article-author">{{item.realName}}</span>
+          </router-link>
+          <span class="time">{{item.article_time}}</span>
+          </p>
         <p class="content">{{item.article_abstract}}</p>
         <p class="article_nums">
           <span @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}">
             <Icon type="ios-heart" />
             {{item.isLike?"已点赞":"点赞"}} {{item.article_like_num}}
           </span>
-          <router-link :to="{path: `/userHome/${item.user_id}`}" v-if="author">
-            <span class="article-author">{{item.realName}}</span>
-          </router-link>
+          
           <span>
             <Icon type="md-eye" />
             {{item.article_reading}}人浏览
@@ -20,7 +24,7 @@
             <i class="iconfont">&#xe61b;</i>
             {{item.comments_num}}条评论
           </span>
-          <span class="time">{{item.article_time}}</span>
+          
         </p>
       </div>
       <img v-if="item.article_img" :src="item.article_img" class="article-img" />
@@ -108,6 +112,27 @@ export default {
         line-clamp: 2;
         -webkit-box-orient: vertical;
       }
+      .author {
+        margin-top: 6px;
+      }
+      .time {
+          color: #000;
+          font-weight: 500;
+          display: inline-block; 
+          margin-left: 10px;
+        }
+        .article-author {
+          cursor: pointer;
+          color: #515a6e;
+          font-weight: 600;
+        }
+        .avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          vertical-align: middle;
+          margin-right: 10px;
+        }
       .article_nums {
         margin-top: 20px;
         span {
@@ -130,14 +155,8 @@ export default {
         .is-like:hover {
           background: #0084ff;
         }
-        .article-author {
-          cursor: pointer;
-          color: #515a6e;
-        }
-        .time {
-          color: #000;
-          font-weight: 500;
-        }
+        
+        
       }
     }
     .article-img {
