@@ -16,7 +16,7 @@
           <span>{{item.focus_num}}人关注</span>&nbsp;|&nbsp;
           <span>{{item.article_num}}篇文章</span>
         </p>
-        <router-link :to="{path:'../zhuanlanDetail'}"><button class="zhuanlan-btn">进入专栏</button></router-link>
+        <router-link :to="{path:'../zhuanlanDetail',query:{id:item.zhuanlan_id}}"><button class="zhuanlan-btn">进入专栏</button></router-link>
       </div>
     </div>
     <div class="zhuanlan-change" @click="change">
@@ -36,65 +36,7 @@ export default {
   },
   data() {
     return {
-      test_data: [
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe:
-            "激发垃圾分类就就发了九分裤垃圾筐浪费据了解发家乐福捡垃圾东方丽景法警队六块腹肌阿里",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        },
-        {
-          img: "../../../../static/img/loading.jpg",
-          title: "干货考研技巧",
-          describe: "激发垃圾分类就就发了九分裤垃圾筐浪费据了解",
-          focus: 1200,
-          article_num: 120
-        }
-      ],
+      test_data: [],
       isLoading: true
     };
   },

@@ -134,7 +134,7 @@ export default {
         this.authorIsShow = true;
         getArticle({
           page: 1,
-          id: 6,
+          id: this.userId,
           zhuanlan_id: id
         }).then(res => {
           this.articleList = res.data.data;
@@ -146,7 +146,7 @@ export default {
         this.authorIsShow = false;
         getArticle({
           page: 1,
-          id: 6,
+          id: this.userId,
           author_id: id
         }).then(res => {
           this.articleList = res.data.data;

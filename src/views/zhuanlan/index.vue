@@ -5,11 +5,11 @@
       <Row :gutter="40">
         <Col span="16">
           <div class="zhuanlan-message">
-            <button class="zhuanlan-focus">关注</button>
-            <img src="../../../static/img/loading.jpg" class="zhuanlan-img" />
+            <button class="zhuanlan-focus">关注&nbsp;{{focus_num}}</button>
+            <img :src="avatar?avatar:'../../../static/img/loading.jpg'" class="zhuanlan-img" />
             <div class="div-title">
-              <h1 class="zhuanlan-title">阿里技术</h1>
-              <p class="zhuanlan-abstract">阿里巴巴官方技术号，关于阿里巴巴经济体的技术创新、实战经验、技术人的成长心得均呈现于此。</p>
+              <h1 class="zhuanlan-title">{{title}}</h1>
+              <p class="zhuanlan-abstract">{{abstract}}</p>
             </div>
           </div>
           <div>
@@ -25,47 +25,45 @@
 <script>
 import headerComponent from "@/components/Header.vue";
 import zhuanlanArticle from "@/components/zhuanlanArticle";
+import {getZhuanlanDetail} from "@/api/zhuanlan"
+import { getArticle } from "@/api/article";
+import {getTime} from "@/utils/tool"
 export default {
+  created() {
+    getZhuanlanDetail({
+      id:this.$route.query.id
+    }).then(res=> {
+      this.title = res.data.zhuanlan.zhuanlan_name;
+      this.avatar = res.data.zhuanlan.zhuanlan_img;
+      this.abstract = res.data.zhuanlan.zhuanlan_abstract;
+      this.focus_num = res.data.focus_num;
+    })
+    getArticle({
+          page: 1,
+          id: this.userId,
+          zhuanlan_id: this.$route.query.id
+        }).then(res => {
+          this.articleList = res.data.data;
+          this.articleList.forEach(item => {
+            item.article_time = getTime(item.article_time);
+          });
+        });
+  },
+  computed: {
+    userId() {
+      return this.$store.state.user.userId;
+    }
+  },
   components: {
     headerComponent,
     zhuanlanArticle
   },
   data() {
     return {
-      articleList: [
-        {
-          article_abstract: "摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要",
-          article_id: 4,
-          article_img:
-            "http://127.0.0.1:3000/images/45ae8751eaf723231e18d95ac5872310.jpg",
-          article_reading: 30,
-          article_time: "5月5日",
-          article_title: "admin的文章",
-          avatar: null,
-          comments_num: 0,
-          isLike: true,
-          realName: "admin",
-          user_id: 6,
-          zhuanlan_id: null,
-          article_like_num: 2
-        },
-        {
-          article_abstract: "摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要摘要",
-          article_id: 4,
-          article_img:
-            "http://127.0.0.1:3000/images/45ae8751eaf723231e18d95ac5872310.jpg",
-          article_reading: 30,
-          article_time: "5月5日",
-          article_title: "admin的文章",
-          avatar: null,
-          comments_num: 0,
-          isLike: true,
-          realName: "admin",
-          user_id: 6,
-          zhuanlan_id: null,
-          article_like_num: 2
-        }
-      ]
+      articleList: [],
+      title: '',
+      avatar: '',
+      abstract: ''
     };
   }
 };

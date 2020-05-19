@@ -13,3 +13,10 @@ export function getRecommend(data) {
         data
     })
 }
+export function getZhuanlanDetail(data) {
+    return fetch({
+        url: 'zhuanlan/getZhuanlanDetail',
+        method: 'post',
+        data
+    })
+}
