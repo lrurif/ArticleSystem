@@ -30,7 +30,7 @@
               <div v-if="item.focus_zhuanlan_time">
                 <img :src="item.zhuanlan_img" class="avatar" />
                 <div class="follow-name">{{item.zhuanlan_name}}</div>
-                <div class="follow-type isZhuanlan">专栏主页</div>
+                <router-link @click.native.stop="" target="_blank" :to="{path:'../zhuanlanDetail',query:{id:item.focus_zhuanlan_id}}"><div class="follow-type isZhuanlan">专栏主页</div></router-link>
               </div>
               <div v-else>
                 <img

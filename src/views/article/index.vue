@@ -29,37 +29,110 @@
         <Col span="6"></Col>
       </Row>
     </div>
+    <div class="bottom-tool">
+      <p class="article_nums">
+          <span :class="{'btn-like':true,'is-like':articleDetail.isLike}" @click="like">
+            <Icon type="ios-heart" />
+            {{articleDetail.isLike?"已点赞":"点赞"}}
+          </span>
+          <span>
+            <i class="iconfont">&#xe61b;</i>
+            1000条评论
+          </span>
+          <span class="time" @click="collect"><i class="iconfont icon-collect"></i>
+          {{articleDetail.isCollect?"已收藏":"收藏"}}</span>
+        </p>
+    </div>
   </div>
 </template>
 
 <script>
-import { addReadNums, getArticleDetail } from "../../api/article";
+import { addReadNums, getArticleDetail,addBrowsingHistory,addCollection,cancelCollection,likeArticle } from "../../api/article";
 import headerComponent from "@/components/Header";
 import loading from "@/components/loading";
 import "highlight.js/styles/github.css";
 export default {
   created() {
-    addReadNums({
-      id: this.$route.params.id
-    }).then(res => {
-      getArticleDetail({
-        id: this.$route.params.id
-      }).then(res => {
-        this.articleDetail = res.data[0];
-        this.isLoading = false;
-        console.log(this.articleDetail);
-      });
-    });
+    this.init();
   },
   components: {
     headerComponent,
     loading
+  },
+  computed: {
+    loginId() {
+      return this.$store.state.user.userId;
+    }
   },
   data() {
     return {
       articleDetail: {},
       isLoading: true
     };
+  },
+  methods: {
+    init() {
+      var arr = [];
+      arr.push(
+        addReadNums({
+          id: this.$route.params.id
+        })
+      );
+      arr.push(
+        getArticleDetail({
+          id: this.$route.params.id,
+          userId: this.loginId
+        })
+      );
+      arr.push(
+        addBrowsingHistory({
+          userId: this.loginId,
+          articleId: this.$route.params.id
+        })
+      )
+      Promise.all(arr).then(res => {
+        this.articleDetail = res[1].data[0];
+        this.isLoading = false;
+      });
+    },
+    collect() {
+      if(this.articleDetail.isCollect) {
+        cancelCollection({
+          userId: this.loginId,
+          articleId: this.$route.params.id
+        }).then(res=> {
+          this.$Message.success('已取消收藏');
+        })
+      }else {
+        addCollection({
+          userId: this.loginId,
+          articleId: this.$route.params.id
+        }).then(res=> {
+          this.$Message.success('收藏成功');
+        })
+      }
+      this.articleDetail.isCollect = !this.articleDetail.isCollect;
+    },
+    like() {
+      if(this.articleDetail.isLike) {
+        likeArticle({
+          type: "cancel",
+          article_id: this.$route.params.id,
+          id: this.loginId
+        }).then(res=> {
+          this.$Message.success('取消点赞');
+        })
+      }else {
+        likeArticle({
+          type: "like",
+          article_id: this.$route.params.id,
+          id: this.loginId
+        }).then(res=> {
+          this.$Message.success('点赞成功');
+        })
+      }
+      this.articleDetail.isLike = !this.articleDetail.isLike;
+    }
   }
 };
 </script>
@@ -120,6 +193,50 @@ export default {
     }
   }
   .content {
+  }
+  .bottom-tool {
+    background: #fff;
+    height: 54px;
+    line-height: 54px;
+    margin-top: 20px;
+    box-shadow: 0 -1px 3px 0 rgba(26,26,26,.1);
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    width: 100%;
+    .article_nums {
+      width: 1160px;
+      margin: 0 auto;
+      padding: 0 20px;
+        span {
+          margin-right: 25px;
+        }
+        .btn-like {
+          background: rgba(0, 132, 255, 0.1);
+          padding: 10px 12px;
+          color: #0084ff;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+        .btn-like:hover {
+          background: rgba(0, 132, 255, 0.2);
+        }
+        .is-like {
+          background: #0084ff;
+          color: #fff;
+        }
+        .is-like:hover {
+          background: #0084ff;
+        }
+        .article-author {
+          cursor: pointer;
+          color: #515a6e;
+        }
+        .time {
+          color: #000;
+          font-weight: 500;
+        }
+      }
   }
 }
 </style>

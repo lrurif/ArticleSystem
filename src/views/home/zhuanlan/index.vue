@@ -34,6 +34,11 @@ export default {
   created() {
     this.init();
   },
+  computed: {
+    userId() {
+      return this.$store.state.user.userId
+    }
+  },
   data() {
     return {
       test_data: [],
@@ -45,10 +50,11 @@ export default {
   },
   methods: {
     init() {
-      getRecommend().then(res=> {
+      getRecommend({
+        user_id:this.userId
+      }).then(res=> {
       this.test_data = res.data;
         this.isLoading = false;
-      
     })
     },
     go_addZhuanLan() {

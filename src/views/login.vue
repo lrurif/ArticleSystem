@@ -42,7 +42,7 @@ export default {
                 if(res.data.message=="success") {
                     this.$Message.success('登录成功');
                     this.$store.commit("setUserId",res.data.id);
-                    this.$store.commit("setUserName",res.data.userName);
+                    this.$store.commit("setRealName",res.data.userName);
                     setTimeout(()=> {
                         this.$router.push("/");
                     },1000);

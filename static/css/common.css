@@ -93,4 +93,5 @@ fieldset, img { border:0; }
 button, input, select, textarea { font-size:100%; }  
 button {
   cursor: pointer;
+  outline: none;
 }

@@ -20,3 +20,10 @@ export function getZhuanlanDetail(data) {
         data
     })
 }
+export function focus_zhuanlan(data) {
+    return fetch({
+        url: 'zhuanlan/focus',
+        method: 'post',
+        data
+    })
+}

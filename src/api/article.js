@@ -39,3 +39,42 @@ export function likeArticle(data) {
         data
     })
 }
+export function getCollectArticle(data) {
+    return fetch({
+        url: 'collect/getCollectArticle',
+        method: 'post',
+        data
+    })
+}
+// 获取浏览历史
+export function getBrowsingArticle(data) {
+    return fetch({
+        url: 'article/getBrowsingArticle',
+        method: 'post',
+        data
+    })
+}
+// 新增或修改浏览历史
+export function addBrowsingHistory(data) {
+    return fetch({
+        url: 'article/addBrowsingHistory',
+        method: 'post',
+        data
+    })
+}
+// 新增s收藏文章
+export function addCollection(data) {
+    return fetch({
+        url: 'article/addCollection',
+        method: 'post',
+        data
+    })
+}
+// 取消收藏文章
+export function cancelCollection(data) {
+    return fetch({
+        url: 'article/cancelCollection',
+        method: 'post',
+        data
+    })
+}

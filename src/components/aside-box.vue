@@ -14,38 +14,21 @@
 <script>
 import {getRecommend} from "@/api/zhuanlan"
 export default {
+    computed: {
+        userId() {
+            return this.$store.state.user.userId
+        }
+    },
     created() {
-        getRecommend().then(res=> {
+        getRecommend({
+            user_id:this.userId
+        }).then(res=> {
             this.specialList = res.data.splice(0,5);
         })
     },
     data() {
         return {
             specialList: [
-                {
-                    url:"../../../../static/img/loading.jpg",
-                    title: "前端笔记本",
-                    description: "此后如没有炬火，我便是唯一的光🔥"
-                },
-                {
-                    url:"../../../../static/img/loading.jpg",
-                    title: "前端笔记本",
-                    description: "此后如没有炬火，我便是唯一的光🔥"
-                },
-                {
-                    url:"../../../../static/img/loading.jpg",
-                    title: "前端笔记本",
-                    description: "此后如没有炬火，我便是唯一的光🔥"
-                },
-                {
-                    url:"../../../../static/img/loading.jpg",
-                    title: "前端笔记本",
-                    description: "此后如没有炬火，我便是唯一的光🔥"
-                },{
-                    url:"../../../../static/img/loading.jpg",
-                    title: "前端笔记本",
-                    description: "此后如没有炬火，我便是唯一的光🔥"
-                }
             ]
         }
     }

@@ -48,12 +48,6 @@
           <router-link :to="{ path: `/userHome/${userId}`}">
             <DropdownItem>我的主页</DropdownItem>
           </router-link>
-          <router-link :to="{ path: '/find'}">
-            <DropdownItem divided>收藏的文章</DropdownItem>
-          </router-link>
-          <router-link :to="{ path: '/find'}">
-            <DropdownItem divided>浏览历史</DropdownItem>
-          </router-link>
           <router-link :to="{ path: '/setting'}">
             <DropdownItem divided>设置</DropdownItem>
           </router-link>
@@ -91,7 +85,7 @@ export default {
     loginOut(name) {
       if (name == "out") {
         this.$store.commit("setUserId", "");
-        this.$store.commit("setUserName", "");
+        this.$store.commit("setRealName", "");
         this.$router.push("/login");
       }
     }

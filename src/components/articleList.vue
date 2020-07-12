@@ -5,7 +5,7 @@
         <p @click="check_detail(item.article_id,index)" class="title">{{item.article_title}}</p>
         <p class="content">{{item.article_abstract}}</p>
         <p class="article_nums">
-          <span @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}">
+          <span v-if="like" @click="agree(index)" :class="{'btn-like':true,'is-like':item.isLike?true:false}">
             <Icon type="ios-heart" />
             {{item.isLike?"已点赞":"点赞"}} {{item.article_like_num}}
           </span>
@@ -37,6 +37,10 @@ export default {
       default: []
     },
     author: {
+      type: Boolean,
+      default: true
+    },
+    like: {
       type: Boolean,
       default: true
     }

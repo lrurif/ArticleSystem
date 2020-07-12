@@ -1,7 +1,7 @@
 export default {
     state: {
         userId: '',
-        userName: ''
+        realName: ''
     },
     getters: {
         getId(state) {
@@ -12,8 +12,8 @@ export default {
         setUserId(state,id) {
             state.userId = id;
         },
-        setUserName(state,name) {
-            state.userName = name;
+        setRealName(state,name) {
+            state.realName = name;
         }
 
     }

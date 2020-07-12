@@ -1,7 +1,7 @@
 <template>
   <div class="main-area">
     <loading v-show="isLoading"></loading>
-    <Row :gutter="40">
+    <Row :gutter="40" v-show="!isLoading">
       <Col span="16">
         <div class="div-left-area">
           <articleList :articleList = articleList></articleList>
