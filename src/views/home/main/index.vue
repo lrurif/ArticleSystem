@@ -30,9 +30,7 @@ export default {
     loading
   },
   created() {
-    if(!this.userId) {
-      this.$router.push("/login")
-    }
+    console.log(this.$store)
     getArticle({
       page:1,
       size:10,
@@ -43,14 +41,14 @@ export default {
       this.articleList.forEach(item=> {
         item.article_time = getTime(item.article_time);
       })
-      console.log(this.articleList)
+
     })
   },
   mounted() {
   },
   computed: {
     userId() {
-          return this.$store.state.user.userId;
+          return this.$store.state.userId;
       }
   },
   data() {

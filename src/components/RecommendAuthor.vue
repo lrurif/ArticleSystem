@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     userId() {
-      return this.$store.state.user.userId;
+      return this.$store.state.userId;
     }
   },
   created() {
@@ -64,7 +64,7 @@ export default {
         person_id: this.authorList[index].id,
         type
       }).then(res => {
-        console.log(res);
+
       });
     }
   }

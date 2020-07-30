@@ -12,7 +12,7 @@
 			<div class="password">
 				<input type="password" name="password" v-model="password" placeholder="密码">
 			</div>
-				<input type="button" value="登录" class="submit" @click="dbclick">
+                <input type="button" value="登录" class="submit"  @click="dbclick" >
 		</div>
 	</div>
 </template>
@@ -21,7 +21,12 @@
 import {login} from "../api/user"
 export default {
     created() {
-        document.title = "登录";
+        document.addEventListener("keyup", ()=> {
+            if(event.keyCode == 13) {
+                this.dbclick();
+            }
+        })
+
     },
     data() {
         return {
@@ -31,6 +36,8 @@ export default {
     },
     methods: {
         dbclick() {
+            console.log(123)
+            event.preventDefault();
             if(this.userName=="" || this.password=="") {
                 this.$Message.error('用户名或密码不能为空');
                 return;
@@ -41,8 +48,10 @@ export default {
             login(data).then(res=> {
                 if(res.data.message=="success") {
                     this.$Message.success('登录成功');
-                    this.$store.commit("setUserId",res.data.id);
-                    this.$store.commit("setRealName",res.data.userName);
+                    this.$store.commit('setUserId',res.data.id);
+                    this.$store.commit('setRealName',res.data.userName);
+                    this.$store.commit('setAvatar', res.data.avatar);
+                    localStorage.setItem("userId",res.data.id);
                     setTimeout(()=> {
                         this.$router.push("/");
                     },1000);

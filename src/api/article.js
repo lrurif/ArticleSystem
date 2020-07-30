@@ -78,3 +78,11 @@ export function cancelCollection(data) {
         data
     })
 }
+// 获取可投稿文章
+export function getSubmitArticle(data) {
+    return fetch({
+        url: 'article/getSubmitArticle',
+        method: 'post',
+        data
+    })
+}

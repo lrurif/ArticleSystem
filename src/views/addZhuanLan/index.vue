@@ -11,10 +11,11 @@
       <input type="text" v-model="zhuanlan.title" placeholder="请输入标题" class="input-title" />
         <img v-if="zhuanlan.img" :src="zhuanlan.img" @click="add_img" class="covers" title="封面图" />
       <p v-else class="add-img" title="封面图" @click="add_img">+</p>
-      <input hidden type="file" name="imageFile" @change="uploadImg" class="uploadFile" />
-      <textarea class="textarea-abstract" placeholder="请输入专栏简介，最大字数200" maxlength="200" v-model="zhuanlan.abstract"></textarea>
+      <input hidden type="file" name="imageFile" @change="uploadImg" class="uploadFile" accept="image/*"/>
+      <textarea class="textarea-abstract" placeholder="请输入专栏简介，最大字数200" v-model="zhuanlan.abstract"></textarea>
+      <div :class="{'fontNum':true,'isOver':fontNum > 200}">{{fontNum}}/200</div>
     </div>
-
+    
   </div>
 </template>
 
@@ -27,7 +28,10 @@ export default {
   },
   computed: {
       userId() {
-          return this.$store.state.user.userId;
+          return this.$store.state.userId;
+      },
+      fontNum() {
+        return this.zhuanlan.abstract.length;
       }
   },
   data() {
@@ -43,11 +47,32 @@ export default {
   },
   methods: {
     publish_zhuanlan() {
+      if(this.zhuanlan.title === '') {
+        this.$Message.warning("标题不能为空");
+        return;
+      }else if(this.zhuanlan.img === '') {
+        this.$Message.warning("专栏标题必须上传");
+        return;
+      }else if(this.zhuanlan.abstract === '' ) {
+        this.$Message.warning("专栏简介不能为空")
+        return;
+      }else if(this.zhuanlan.abstract.length > 200) {
+        this.$Message.warning("专栏简介字数不能超过200");
+        return;
+      }else if(this.zhuanlan.title.length > 30) {
+        this.$Message.warning("专栏标题字数不能超过30");
+        return;
+      }
         add(this.zhuanlan).then(res=> {
-          if(res.data.code === 200) {
+          if(res.data.message === "success") {
             this.$Message.success("发布成功");
             setTimeout(()=> {
-              this.$route.push("/home/zhuanlan");
+              this.$router.push("/home/zhuanlan");
+            },1000)
+          }else {
+            this.$Message.error("发布失败");
+            setTimeout(()=> {
+              this.$router.push("/home/zhuanlan");
             },1000)
           }
         })
@@ -61,15 +86,14 @@ export default {
       }
       var formData = new FormData();
       var file = document.querySelector(".uploadFile").files[0];
+      if(!file.type.includes("image")) {
+        this.$Message.error("图片类型错误");
+        return;
+      }
       formData.append("imageFile", file);
       uploadSingle(formData).then(res => {
         this.zhuanlan.img = res.data.path;
       });
-      //   let files = document.querySelector(".uploadFile").files;
-      //   for (let i = 0; i < files.length; i++) {
-      //     formData.append("imageFile", files[i]);
-      //   }
-      //   uploadMultiple(formData).then(res => {});
     }
   }
 };
@@ -160,6 +184,13 @@ export default {
     }
     .markdown-body {
       min-height: 560px;
+    }
+    .fontNum {
+      float: right;
+      font-size: 20px;
+    }
+    .isOver {
+      color: red;
     }
   }
 }

@@ -39,19 +39,28 @@ export const constantRouterMap = [
     path: '/login',
     name: 'login',
     component: login, 
-    hidden: true 
+    hidden: true,
+    meta: {
+      title: '登录'
+    }
   },
   { 
     path: '/register',
     name:'register',
     component: register, 
-    hidden: true 
+    hidden: true,
+    meta: {
+      title: '注册'
+    }
   },
   { 
     path: '/write',
     name:'write',
     component: write, 
-    hidden: true 
+    hidden: true ,
+    meta: {
+      title: '写作'
+    }
   },
   // 管理员路由
   {
@@ -129,7 +138,10 @@ export const constantRouterMap = [
   {
     path: '/addZhuanLan',
     name: 'addZhuanLan',
-    component: addZhuanLan
+    component: addZhuanLan,
+    meta: {
+      title: '新增专栏'
+    }
   },{
     path: '/zhuanlanDetail',
     name: 'zhuanlanMain',
@@ -141,6 +153,23 @@ let router=new Router({
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
+})
+router.beforeEach((to, from, next) => {
+  /* 路由发生变化修改页面title */
+  console.log(to.name)
+  if(to.name == 'login') {
+    next();
+  }else {
+    if(!localStorage.getItem("userId")) {
+      next("/login");
+      return;
+    }
+  }
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  
+  next()
 })
 
 export default router;

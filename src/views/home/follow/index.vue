@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     userId() {
-      return this.$store.state.user.userId;
+      return this.$store.state.userId;
     }
   },
   components: {
@@ -121,7 +121,7 @@ export default {
         this.currentList = this.followList.filter(item => {
           return item.zhuanlan_name;
         });
-        console.log(this.currentList);
+
       } else if (value == "author") {
         this.currentList = this.followList.filter(item => {
           return !item.zhuanlan_name;

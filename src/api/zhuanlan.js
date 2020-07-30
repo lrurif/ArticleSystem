@@ -27,3 +27,10 @@ export function focus_zhuanlan(data) {
         data
     })
 }
+export function addArticle(data) {
+    return fetch({
+        url: 'zhuanlan/addArticle',
+        method: 'post',
+        data
+    })
+}

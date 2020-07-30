@@ -41,7 +41,7 @@
       <Dropdown placement="top-start" @on-click="loginOut">
         <div class="head-img">
           <router-link :to="{ path: `/userHome/${userId}`}" class="person-center">
-            <img src="../../static/img/userName.png" class="img-head" />
+            <img :src="avatar?avatar:'../../static/img/userName.png'" class="img-head" />
           </router-link>
         </div>
         <DropdownMenu slot="list">
@@ -69,10 +69,14 @@
 <script>
 export default {
   name: "showheader",
-  created() {},
+  created() {
+  },
   computed: {
     userId() {
-      return this.$store.state.user.userId;
+      return this.$store.state.userId;
+    },
+    avatar() {
+      return this.$store.state.avatar;
     }
   },
   data() {
@@ -84,8 +88,11 @@ export default {
     },
     loginOut(name) {
       if (name == "out") {
-        this.$store.commit("setUserId", "");
-        this.$store.commit("setRealName", "");
+        this.$store.dispatch("setId","");
+        this.$store.dispatch("setName","");
+        this.$store.dispatch("setHead", null);
+        localStorage.removeItem("userId");
+        localStorage.removeItem("store");
         this.$router.push("/login");
       }
     }
@@ -202,6 +209,7 @@ export default {
         padding: 9px;
         .img-head {
           width: 40px;
+          height: 40px;
           border-radius: 50%;
           border: 1px solid #f0f0f0;
           box-sizing: border-box;

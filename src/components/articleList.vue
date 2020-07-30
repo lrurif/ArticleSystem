@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     userId() {
-          return this.$store.state.user.userId;
+          return this.$store.state.userId;
       }
   },
   methods: {

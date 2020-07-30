@@ -41,7 +41,7 @@ export default {
   },
   computed: {
       userId() {
-          return this.$store.state.user.userId;
+          return this.$store.state.userId;
       }
   },
   data() {
@@ -59,11 +59,11 @@ export default {
   methods: {
     publish_article() {
         articleAdd(this.article).then(res=> {
-          if(res.data.code === 200) {
+          if(res.data.message === "发布成功") {
             this.$Message.success("发布成功");
             setTimeout(()=> {
-              this.$route.push("/");
-            },1000)
+              this.$router.push("/");
+            },100)
           }
         })
     },
@@ -76,15 +76,18 @@ export default {
       }
       var formData = new FormData();
       var file = document.querySelector(".uploadFile").files[0];
+      if(!file.type.includes("image")) {
+        this.$Message.error("图片类型错误");
+        return;
+      }
+      if(!file.type.includes("image")) {
+        this.$Message.error("图片类型错误");
+        return;
+      }
       formData.append("imageFile", file);
       uploadSingle(formData).then(res => {
         this.article.img = res.data.path;
       });
-      //   let files = document.querySelector(".uploadFile").files;
-      //   for (let i = 0; i < files.length; i++) {
-      //     formData.append("imageFile", files[i]);
-      //   }
-      //   uploadMultiple(formData).then(res => {});
     },
     handleEditorImgAdd(pos, $file) {
       let formdata = new FormData();

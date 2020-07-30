@@ -33,6 +33,9 @@
               <Page :total="100" />
           </div>
       </div>
+      <div>
+          <Table :columns="column22" :data="data22" :border="true" :stripe="true"></Table>
+      </div>
   </div>
 </template>
 
@@ -131,6 +134,66 @@ export default {
                         status: '正常',
                         date: '2016-10-02',
                     },
+                ],
+                column22: [
+                    {
+                        title: '计划',
+                        key: 'name',
+                        width: "220"
+                    },
+                    {
+                        title: '时间',
+                        key: 'age',
+                        width: 180
+                    },
+                ],
+                data22: [
+                    {
+                        name: '起床、吃早餐',
+                        age: '8:30-9:00',
+                        address: 'New York No. 1 Lake Park',
+                        date: '2016-10-03'
+                    },
+                    {
+                        name: '学习专业知识或者制作网页',
+                        age: '9:00-11:30',
+                        address: 'London No. 1 Lake Park',
+                        date: '2016-10-01'
+                    },
+                    {
+                        name: '吃午饭以及睡午觉',
+                        age: '12:00-13:30',
+                        address: 'Sydney No. 1 Lake Park',
+                        date: '2016-10-02'
+                    },
+                    {
+                        name: '学习专业知识或者制作网页',
+                        age: '13:30-16:30',
+                        address: 'Ottawa No. 2 Lake Park',
+                        date: '2016-10-04'
+                    },
+                    {
+                        name: '娱乐时间',
+                        age: '16:30-17:00',
+                        address: 'Ottawa No. 2 Lake Park',
+                        date: '2016-10-04'
+                    },
+                    {
+                        name: '吃晚饭以及洗澡',
+                        age: '17:20-19:30'
+                    },
+                    {
+                        name: '学习专业知识或者制作网页',
+                        age: '19:30-21:00'
+                    },
+                    {
+                        name: '娱乐',
+                        age: '21:00-22:00'
+                    },
+                    {
+                        name: '睡觉',
+                        age: '22:00-8:30'
+                    }
                 ]
         }
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="special-column">
       <p class="aside-title">分类专栏</p>
-      <div class="link-special" v-for="(item,index) in specialList" :key="index">
+      <div class="link-special clearfix" v-for="(item,index) in specialList" :key="index">
           <img :src="item.zhuanlan_img||'../../static/img/loading.jpg'" class="special-img">
           <div>
               <p class="special-title">{{item.zhuanlan_name}}</p>
@@ -16,7 +16,7 @@ import {getRecommend} from "@/api/zhuanlan"
 export default {
     computed: {
         userId() {
-            return this.$store.state.user.userId
+            return this.$store.state.userId
         }
     },
     created() {

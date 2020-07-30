@@ -42,7 +42,6 @@ export default {
       this.realName = res.data.userName;
       this.sex = res.data.sex;
       this.introduction = res.data.introduction;
-      console.log(!!res.data.avatar)
       this.avatar = res.data.avatar;
     });
   },
@@ -59,10 +58,10 @@ export default {
   },
   computed: {
     // realName() {
-    //     return this.$store.state.user.realName;
+    //     return this.$store.state.realName;
     // },
     userId() {
-      return this.$store.state.user.userId;
+      return this.$store.state.userId;
     }
   },
   methods: {
@@ -75,6 +74,10 @@ export default {
       }
       var formData = new FormData();
       var file = document.querySelector(".input-avatar").files[0];
+      if(!file.type.includes("image")) {
+        this.$Message.error("图片类型错误");
+        return;
+      }
       formData.append("imageFile", file);
       uploadSingle(formData).then(res => {
         this.avatar = res.data.path;
@@ -91,6 +94,7 @@ export default {
           avatar: this.avatar,
           introduction: this.introduction
       }).then(res=> {
+          this.$store.dispatch("setHead", this.avatar)
           this.$Message.success("修改成功");
       })
 

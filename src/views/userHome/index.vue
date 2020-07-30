@@ -95,7 +95,7 @@ export default {
       return this.$route.params.userId;
     },
     loginId() {
-      return this.$store.state.user.userId;
+      return this.$store.state.userId;
     }
   },
   watch: {
@@ -106,7 +106,6 @@ export default {
       }).then(res => {
         this.userInfo = res.data;
       });
-      console.log(this.currentKey);
       this.getMessage(this.currentKey);
     }
   },
@@ -145,7 +144,7 @@ export default {
           page: 1
         }).then(res => {
           this.collectList = res.data.data;
-          console.log(res.data);
+
         });
       }else if(keyWord == 'history') {
         getBrowsingArticle({
