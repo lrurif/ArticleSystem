@@ -21,7 +21,7 @@ import articleList from "@/components/articleList"
 import loading from "@/components/loading"
 import asideBox from "@/components/aside-box.vue"
 import {getArticle, likeArticle} from "../../../api/article"
-import {getTime} from "@/utils/tool"
+import {getTime, throttle} from "@/utils/tool"
 export default {
   components: {
     RecommendAuthor,
@@ -30,7 +30,6 @@ export default {
     loading
   },
   created() {
-    console.log(this.$store)
     getArticle({
       page:1,
       size:10,
@@ -45,11 +44,16 @@ export default {
     })
   },
   mounted() {
+    window.addEventListener("scroll", this.throttleScroll)
+  },
+  beforeDestroy() {
+    console.log(1234)
+    window.removeEventListener("scroll", this.throttleScroll)
   },
   computed: {
     userId() {
           return this.$store.state.userId;
-      }
+      },
   },
   data() {
     return {
@@ -78,12 +82,24 @@ export default {
           focus:1311
         }
       ],
-      isLoading: true
+      isLoading: true,
+      page: 1
     }
   },
   methods: {
-    
-  }
+    scrollObserve() {
+      if(document.documentElement.scrollTop + window.innerHeight + 30 > document.body.offsetHeight) {
+        getArticle({
+          page: ++this.page,
+          size:10,
+          id:this.userId
+        }).then(res=> {
+          this.articleList.push(...res.data.data);
+      })
+    }
+  },
+  throttleScroll: throttle("scrollObserve", 200)
+}
 }
 </script>
 

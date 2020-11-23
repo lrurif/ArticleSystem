@@ -37,7 +37,8 @@ import { uploadSingle } from "@/api/upload";
 export default {
   created() {
     getUserInfoById({
-      userId: this.userId
+      userId: this.userId,
+      id: this.userId
     }).then(res => {
       this.realName = res.data.userName;
       this.sex = res.data.sex;

@@ -1,4 +1,5 @@
 <template>
+<div style="width: 100%;height:100vh;background-color: #f1f1f1;display: flex;align-items: center;justify-content: center;">
     <div class="login-wrapper">
 		<div class="login-head">
 			<router-link :to="{ name: 'login'}" class="login actived">登录</router-link>
@@ -15,17 +16,18 @@
                 <input type="button" value="登录" class="submit"  @click="dbclick" >
 		</div>
 	</div>
+    </div>
 </template>
 
 <script>
 import {login} from "../api/user"
 export default {
     created() {
-        document.addEventListener("keyup", ()=> {
-            if(event.keyCode == 13) {
-                this.dbclick();
-            }
-        })
+        // document.addEventListener("keyup", ()=> {
+        //     if(event.keyCode == 13) {
+        //         this.dbclick();
+        //     }
+        // })
 
     },
     data() {
@@ -75,7 +77,7 @@ export default {
         background: #fff;
         box-sizing: border-box;
         position: relative;
-        margin-top: 60px;
+        box-shadow: 0px 0px 8px rgba(0,0,0,.1);
         .login-head {
             .login,.register {
                 padding: 10px;
@@ -148,7 +150,7 @@ export default {
     .login-form .submit {
         width:100%;
         height:50px;
-        margin-top:30px;
+        margin-top:50px;
         background:rgb(49,148,208);
         color:#fff;
         border-radius:25px;

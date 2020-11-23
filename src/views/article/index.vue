@@ -90,7 +90,6 @@ import loading from "@/components/loading";
 import "highlight.js/styles/github.css";
 export default {
   created() {
-    console.log(this);
     this.init();
   },
   components: {

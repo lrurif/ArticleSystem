@@ -9,9 +9,14 @@
     </div>
     <div class="write-body">
       <input type="text" v-model="zhuanlan.title" placeholder="请输入标题" class="input-title" />
-        <img v-if="zhuanlan.img" :src="zhuanlan.img" @click="add_img" class="covers" title="封面图" />
+      <img v-if="zhuanlan.img" :src="zhuanlan.img" @click="add_img" class="covers" title="封面图" />
       <p v-else class="add-img" title="封面图" @click="add_img">+</p>
       <input hidden type="file" name="imageFile" @change="uploadImg" class="uploadFile" accept="image/*"/>
+      <div>
+        <img v-if="zhuanlan.bg" :src="zhuanlan.bg" @click="add_bg" class="covers" title="背景图" />
+        <p v-else class="add-img" title="背景图" @click="add_bg">+</p>
+        <input hidden type="file" name="imageFile" @change="uploadBg" class="uploadBg" accept="image/*"/>
+      </div>
       <textarea class="textarea-abstract" placeholder="请输入专栏简介，最大字数200" v-model="zhuanlan.abstract"></textarea>
       <div :class="{'fontNum':true,'isOver':fontNum > 200}">{{fontNum}}/200</div>
     </div>
@@ -42,6 +47,7 @@ export default {
           title: '',
           img: "",
           abstract:'',
+          bg: ""
       }
     };
   },
@@ -80,6 +86,10 @@ export default {
     add_img() {
       document.querySelector(".uploadFile").click();
     },
+    add_bg() {
+      console.log(333)
+      document.querySelector(".uploadBg").click();
+    },
     uploadImg() {
       if (!document.querySelector(".uploadFile").files[0]) {
         return;
@@ -93,6 +103,22 @@ export default {
       formData.append("imageFile", file);
       uploadSingle(formData).then(res => {
         this.zhuanlan.img = res.data.path;
+      });
+    },
+    uploadBg() {
+      if (!document.querySelector(".uploadBg").files[0]) {
+        return;
+      }
+      var formData = new FormData();
+      var file = document.querySelector(".uploadBg").files[0];
+      if(!file.type.includes("image")) {
+        this.$Message.error("图片类型错误");
+        return;
+      }
+      formData.append("imageFile", file);
+      uploadSingle(formData).then(res => {
+        this.zhuanlan.bg = res.data.path;
+        console.log(this.zhuanlan)
       });
     }
   }

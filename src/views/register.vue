@@ -1,4 +1,5 @@
 <template>
+<div style="width: 100%;height:100vh;background-color: #f1f1f1;display: flex;align-items: center;justify-content: center;">
   <div class="register-wrapper">
 		<div class="register-head">
 			<router-link :to="{ name: 'login'}" class="login">登录</router-link>
@@ -18,6 +19,7 @@
 				<input type="button" value="注册" class="submit register-btn" @click="register">
 		</div>
 	</div>
+    </div>
 </template>
 
 <script>
@@ -66,12 +68,13 @@ export default {
 <style lang="less" scoped>
     .register-wrapper {
         width: 400px;
-        margin: 60px auto 0;
+        margin: 0 auto;
         text-align: center;
         padding: 50px;
         background: #fff;
         box-sizing: border-box;
         position:relative;
+        box-shadow: 0px 0px 8px rgba(0,0,0,.1);
         .register-head {
             .login,.register {
                 padding: 10px;
@@ -144,7 +147,7 @@ export default {
     .register-form .submit {
         width:100%;
         height:50px;
-        margin-top:30px;
+        margin-top:50px;
         background:rgb(49,148,208);
         color:#fff;
         border-radius:25px;

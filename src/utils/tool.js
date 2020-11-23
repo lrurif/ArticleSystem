@@ -27,3 +27,13 @@ export const debounce = (func, time) => {
     }
     
 }
+export const throttle = (fName, time) => {
+    var timer = null;
+    return function () {
+        if(timer) return;
+        timer = setTimeout(()=> {
+            this[fName]();
+            timer = null;
+        }, time)
+    }
+}

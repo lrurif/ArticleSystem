@@ -84,7 +84,8 @@ import { getTime } from "@/utils/tool";
 export default {
   created() {
     getUserInfoById({
-      userId: this.userId
+      userId: this.userId,
+      id: this.loginId || -1
     }).then(res => {
       this.userInfo = res.data;
     });
@@ -102,7 +103,8 @@ export default {
     $route(to, from) {
       this.currentKey = "article";
       getUserInfoById({
-        userId: this.userId
+        userId: this.userId,
+        id: this.loginId
       }).then(res => {
         this.userInfo = res.data;
       });

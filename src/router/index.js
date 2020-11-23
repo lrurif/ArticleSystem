@@ -156,8 +156,7 @@ let router=new Router({
 })
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */
-  console.log(to.name)
-  if(to.name == 'login') {
+  if(to.name == 'login' || to.name == 'register') {
     next();
   }else {
     if(!localStorage.getItem("userId")) {
@@ -168,7 +167,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
-  
   next()
 })
 
